@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
@@ -87,7 +88,7 @@ class ContactData extends Component {
         value: 'fastest',
         validation: {},
         valid: false
-      }
+      },
     },
     formIsValid: false,
     loading: false
@@ -102,7 +103,7 @@ class ContactData extends Component {
       formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
     }
     const order = {
-      ingredients: this.props.ingredients,
+      ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData
     }
@@ -151,7 +152,8 @@ class ContactData extends Component {
     for (let inputIdentifier in updatedOrderedForm) {
       formIsValid = updatedOrderedForm[inputIdentifier].valid && formIsValid;
     }
-    this.setState({orderForm: updatedOrderedForm, formIsValid});
+    console.log('form is valid?', formIsValid);
+    this.setState({orderForm: updatedOrderedForm, formIsValid: formIsValid});
   }
 
   render() {
@@ -175,7 +177,7 @@ class ContactData extends Component {
             touched={formElement.config.touched}
             changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
         ))}
-        <Button btnType="Success" clicked={this.orderHandler} disabled={!this.state.orderForm.formIsValid}>ORDER</Button>
+        <Button btnType="Success" clicked={this.orderHandler} disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
     if (this.state.loading) {
@@ -190,4 +192,11 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+  return {
+    ings: state.ingredients,
+    price: state.totalPrice
+  };
+};
+
+export default connect(mapStateToProps)(ContactData);
