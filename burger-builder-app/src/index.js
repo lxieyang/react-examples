@@ -10,14 +10,17 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { burgerBuilderReducer } from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 
 const rootReducer = combineReducers({
   burgerBuilder: burgerBuilderReducer,
-  order: orderReducer
+  order: orderReducer,
+  auth: authReducer
 });
 
 // https://github.com/zalmoxisus/redux-devtools-extension
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// the <process.env.NODE_ENV === 'development' ?> will make redux dev tools only available in development mode
+const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const store = createStore(
   rootReducer,
