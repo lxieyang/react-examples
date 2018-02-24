@@ -2,8 +2,9 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
 import { BASE_PRICE, INGREDIENT_PRICES }from '../reducers/burgerBuilder';
 
+// action creators
 export const addIngredient = (name) => {
-  return {
+  return {  // the javascript object is the action
     type: actionTypes.ADD_INGREDIENT,
     ingredientName: name
   };
@@ -16,6 +17,7 @@ export const removeIngredient = (name) => {
   };
 };
 
+// internal action creator
 export const setIngredients = (ingredients, totalPrice) => {
   return {
     type: actionTypes.SET_INGREDIENTS,
@@ -34,7 +36,7 @@ export const fetchIngredientsFailed = () => {
 
 export const initIngredients = () => {
   return dispatch => {
-    axios.get('https://react-my-burger-ff530.firebaseio.com/ingredients.json')
+    axios.get('ingredients.json')
       .then(response => {
         const receivedIngredients = response.data;
         // calculate the total price
